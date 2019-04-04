@@ -1,0 +1,13 @@
+.sheet {
+  @apply .bg-white .shadow .rounded .mx-auto;
+  width: 720px;
+}
+
+.backsheet {
+  @apply .bg-white .mx-auto .py-2 .px-3 .bg-grey-lighter .rounded-t .text-grey-darker;
+  width: 680px;
+}
+
+.backsheet a {
+  @apply .no-underline .text-grey-darker .text-sm .font-bold;
+}

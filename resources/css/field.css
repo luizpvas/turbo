@@ -1,0 +1,31 @@
+.field {
+  @apply .mb-6;
+}
+
+.field__label {
+  @apply .block .font-bold .text-grey-darkest;
+}
+
+.field__label-checkbox {
+  @apply .flex .items-center;
+}
+
+.field__label-checkbox span {
+  @apply .px-2;
+}
+
+.field__label-checkbox input:checked + span {
+  @apply .bg-yellow .rounded-full .text-yellow-darkest;
+}
+
+.field__input {
+  @apply .block .w-full .border-2 .rounded-sm .p-2;
+}
+
+.field__input--error {
+  @apply .border-red;
+}
+
+.field__validation {
+  @apply .text-sm .text-red .italic;
+}
