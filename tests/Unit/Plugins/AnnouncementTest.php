@@ -36,8 +36,6 @@ class AnnouncementTest extends TestCase
 
     function test_renders_highlighted_title()
     {
-        $this->withoutExceptionHandling();
-
         $website = factory('App\Models\Website')->create();
         $website->publishTemplatesFromDirectory('tests/fixtures/teclia.com');
 
@@ -62,6 +60,20 @@ class AnnouncementTest extends TestCase
 
         $this->get($website->route('/page_with_announcement'))
             ->assertSee($announcement->body);
+    }
+
+    function test_renders_highlighted_published_at()
+    {
+        $website = factory('App\Models\Website')->create();
+        $website->publishTemplatesFromDirectory('tests/fixtures/teclia.com');
+
+        $announcement = factory('App\Models\Plugins\Announcement')->create([
+            'website_id' => $website->id,
+            'is_highlighted' => true
+        ]);
+
+        $this->get($website->route('/page_with_announcement'))
+            ->assertSee($announcement->created_at->diffForHumans());
     }
 
     function test_doesnt_render_highlighted_announcement_if_it_doesnt_exist()
@@ -104,7 +116,9 @@ class AnnouncementTest extends TestCase
             ->assertStatus(200)
             ->assertSee($announcement1->title)
             ->assertSee($announcement1->body)
+            ->assertSee($announcement1->created_at->diffForHumans())
             ->assertSee($announcement2->title)
-            ->assertSee($announcement2->body);
+            ->assertSee($announcement2->body)
+            ->assertSee($announcement2->created_at->diffForHumans());
     }
 }

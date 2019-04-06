@@ -16,7 +16,7 @@ class CreateDeploymentsTable extends Migration
         Schema::create('deployments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('website_id');
-            $table->string('templates_version')->comment('version of the templates for this deployment.');
+            $table->integer('templates_version')->comment('version of the templates for this deployment. incremented 1 by 1.');
             $table->timestamps();
 
             $table->foreign('website_id')

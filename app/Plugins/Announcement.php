@@ -23,7 +23,7 @@ class Announcement implements Plugin
      */
     function description()
     {
-        return __('Short announcements with an optional highlight one.');
+        return __('Website-wide short announcements (kinda like a news feed).');
     }
 
     /**
@@ -34,7 +34,17 @@ class Announcement implements Plugin
      */
     function rootPath($website)
     {
-        return route('websites.blog_posts.index', $website);
+        return route('websites.announcements.index', $website);
+    }
+
+    /**
+     * Callback called when the plugin is enabled.
+     *
+     * @param  App\Models\Website $website Current website
+     * @return void
+     */
+    function enable($website)
+    {
     }
 
     /**
@@ -55,7 +65,9 @@ class Announcement implements Plugin
         case 'announcement-list-item-title':
             return '<?= $item->title ?>';
         case 'announcement-list-item-body':
-            return '<?= $item->body ?>';
+            return '<?= $item->body_html ?>';
+        case 'announcement-list-item-published-at':
+            return '<?= $item->created_at->diffForHumans() ?>';
         case 'announcement-has-highlighted':
             $render->peek('end-announcement-has-highlighted');
             return '<?php if('.bool_expr(self::getHighlightedAnnouncementFromRequest()).') { ?>';
@@ -64,7 +76,9 @@ class Announcement implements Plugin
         case 'announcement-highlighted-title':
             return '<?= \App\Plugins\Announcement::getHighlightedAnnouncementFromRequest("title") ?>';
         case 'announcement-highlighted-body':
-            return '<?= \App\Plugins\Announcement::getHighlightedAnnouncementFromRequest("body") ?>';
+            return '<?= \App\Plugins\Announcement::getHighlightedAnnouncementFromRequest("body_html") ?>';
+        case 'announcement-highlighted-published-at':
+            return '<?= \App\Plugins\Announcement::getHighlightedAnnouncementFromRequest("created_at")->diffForHumans() ?>';
         default:
             return null;
         }

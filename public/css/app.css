@@ -660,6 +660,55 @@ table {
   }
 }
 
+.pagination {
+  display: inline-flex;
+  list-style: none;
+  padding: 0;
+  border-radius: .25rem;
+  overflow: auto;
+}
+
+.pagination .page-item .page-link {
+  display: block;
+  background-color: #fff;
+  padding-left: .5rem;
+  padding-right: .5rem;
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+  border-right-width: 1px;
+  border-top-width: 1px;
+  font-size: .875rem;
+  border-bottom-width: 1px;
+  color: #22292f;
+  text-decoration: none;
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: #f1f5f8;
+}
+
+.pagination .page-item:first-child .page-link {
+  border-top-left-radius: .25rem;
+  border-bottom-left-radius: .25rem;
+}
+
+.pagination .page-item:last-child .page-link {
+  border-right-width: 1px;
+  border-top-right-radius: .25rem;
+  border-bottom-right-radius: .25rem;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #2779bd;
+  border-color: #2779bd;
+  color: #fff;
+}
+
+.pagination .page-item.disabled .page-link {
+  background-color: #f1f5f8;
+  color: #8795a1;
+}
+
 /**
  * Here you would add any of your custom component classes; stuff that you'd
  * want loaded *before* the utilities so that the utilities could still
@@ -6334,6 +6383,10 @@ table {
 
 h1 {
   font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 1.25rem;
 }
 
 @media (min-width: 576px) {

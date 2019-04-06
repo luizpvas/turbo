@@ -16,6 +16,7 @@ class CreatePluginsBlogPostsTable extends Migration
         Schema::create('plugins_blog_posts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('website_id');
+            $table->unsignedBigInteger('author_id');
             $table->string('title');
             $table->string('slug');
             $table->text('body_html');
@@ -26,6 +27,11 @@ class CreatePluginsBlogPostsTable extends Migration
             $table->foreign('website_id')
                 ->references('id')
                 ->on('websites')
+                ->onDelete('cascade');
+            
+            $table->foreign('author_id')
+                ->references('id')
+                ->on('users')
                 ->onDelete('cascade');
 
             $table->unique(['website_id', 'slug']);

@@ -12,10 +12,10 @@
     </div>
 
     @forelse($plugins as $plugin)
-        <div class="p-4 border-t">
-            <a class="text-xl block no-underline font-bold text-blue" href="{{ $plugin->rootPath($website) }}">{{ $plugin->instance()->name() }}</a>
-            {{ $plugin->instance()->description() }}
-        </div>
+        <a class="block border-t no-underline p-3 text-grey-darkest hover:bg-yellow-lighter" href="{{ $plugin->rootPath($website) }}">
+            <div class="text-xl block font-bold text-blue">{{ $plugin->instance()->name() }}</div>
+            <div>{{ $plugin->instance()->description() }}</div>
+        </a>
     @empty
         <div class="p-6 text-grey-darker">
             <div>@lang('You don\'t have any plugin enabled on this website right now.')</div>

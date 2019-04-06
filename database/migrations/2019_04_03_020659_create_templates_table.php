@@ -16,14 +16,20 @@ class CreateTemplatesTable extends Migration
         Schema::create('templates', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('website_id');
+            $table->unsignedBigInteger('deployment_id');
             $table->string('path')->comment('url path');
-            $table->string('version');
+            $table->integer('version');
             $table->text('html');
             $table->timestamps();
 
             $table->foreign('website_id')
                 ->references('id')
                 ->on('websites')
+                ->onDelete('cascade');
+
+            $table->foreign('deployment_id')
+                ->references('id')
+                ->on('deployments')
                 ->onDelete('cascade');
         });
     }

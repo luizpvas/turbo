@@ -16,14 +16,22 @@ class CreateAnnouncementsTable extends Migration
         Schema::create('plugins_announcements', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('website_id');
+            $table->unsignedBigInteger('author_id');
             $table->string('title');
-            $table->text('body');
+            $table->text('body_html');
+            $table->text('body_text');
             $table->boolean('is_highlighted')->default(false);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('website_id')
                 ->references('id')
                 ->on('websites')
+                ->onDelete('cascade');
+
+            $table->foreign('author_id')
+                ->references('id')
+                ->on('users')
                 ->onDelete('cascade');
         });
     }

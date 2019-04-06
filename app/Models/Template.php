@@ -14,6 +14,15 @@ class Template extends Model
     protected $guarded = [];
 
     /**
+     * Attributes that should be casted to non-string PHP types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'version' => 'integer'
+    ];
+
+    /**
      * Renders this template.
      *
      * @return string

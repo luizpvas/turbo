@@ -3,6 +3,7 @@
 namespace App\Plugins;
 
 use App\Models\Plugins\BlogPost;
+use App\Models\Plugins\BlogEngine;
 
 class Blog implements Plugin
 {
@@ -40,6 +41,21 @@ class Blog implements Plugin
     }
 
     /**
+     * Callback called when the plugin is enabled.
+     *
+     * @param  App\Models\Website $website Current website
+     * @return void
+     */
+    function enable($website)
+    {
+        if (is_null(BlogEngine::defaultForWebsite($website))) {
+            BlogEngine::create([
+                'website_id' => $website->id
+            ]);
+        }
+    }
+
+    /**
      * Maybe runs the given at-call.
      *
      * @param  mixed             $call   Parsed at-call.
@@ -49,12 +65,29 @@ class Blog implements Plugin
     function runCall($call, $render)
     {
         switch($call['call']) {
+        case 'blog-posts-paginated-list':
+            $render->peek('end-blog-posts-paginated-list');
+            return '<?php foreach(\App\Plugins\Blog::paginatedPosts() as $item) { ?>';
+        case 'end-blog-posts-paginated-list':
+            return '<?php } ?>';
+        case 'blog-post-list-item-title':
+            return '<?= $item->title ?>';
+        case 'blog-post-list-item-published-at':
+            return '<?= $item->published_at->diffForHumans() ?>';
+        case 'blog-post-list-item-url':
+            return '<?= \App\Plugins\Blog::postUrl($item) ?>';
+        case 'blog-post-list-item-tags':
+            return '<?= \App\Plugins\Blog::renderTags($item->tags) ?>';
+        case 'blog-post-list-item-author-name':
+            return '<?= $item->author->name ?>';
         case 'blog-post-title':
-            return $this->getPostFromHttpRequest()->title;
+            return '<?= \App\Plugins\Blog::getPostFromRequest("title") ?>';
         case 'blog-post-body':
-            return $this->getPostFromHttpRequest()->body_html;
+            return '<?= \App\Plugins\Blog::getPostFromRequest("body_html") ?>';
         case 'blog-post-tags':
-            return 'Blog post tags';
+            return '<?= \App\Plugins\Blog::renderTags(\App\Plugins\Blog::getPostFromRequest()->tags) ?>';
+        case 'blog-post-author-name':
+            return '<?= \App\Plugins\Blog::getPostFromRequest()->author->name ?>';
         case 'blog-post-related':
             return 'Blog post related';
         default:
@@ -62,15 +95,51 @@ class Blog implements Plugin
         }
     }
 
+    static function postUrl($item)
+    {
+        $engine = BlogEngine::defaultForWebsite(website());
+
+        if ($engine) {
+            return $engine->blog_post_path . '/' . $item->slug;
+        }
+
+        throw new \Exception('Could find BlogEngine record for this website.');
+    }
+
+    /**
+     * Renders the list of tags as HTML templates.
+     *
+     * @param  array $tags List of tags
+     * @return string
+     */
+    static function renderTags($tags)
+    {
+        return $tags->map(function ($tag) {
+            return '<div class="inline-block bg-indigo text-white rounded font-bold text-xs py-px px-1 mr-1">' . $tag->tag . '</div>';
+        })->implode("");
+    }
+
+    /**
+     * Paginates the latest blog posts for this website.
+     *
+     * @return mixed
+     */
+    static function paginatedPosts()
+    {
+        return BlogPost::fromWebsite(website())
+            ->orderBy('published_at', 'desc')
+            ->paginate(10);
+    }
+
     /**
      * Fetches the blog post record from the request.
      *
      * @return App\Models\Plugins\BlogPost
      */
-    function getPostFromHttpRequest()
+    static function getPostFromRequest($attr = null)
     {
         if ($post = request()->get('post')) {
-            return $post;
+            return is_null($attr) ? $post : ($post->$attr ?? '');
         }
 
         $parts = explode("/", request()->path);
@@ -82,6 +151,6 @@ class Blog implements Plugin
 
         request()->attributes->set('post', $post);
 
-        return $post;
+        return is_null($attr) ? $post : ($post->$attr ?? '');
     }
 }

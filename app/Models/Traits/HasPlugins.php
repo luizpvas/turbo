@@ -13,7 +13,8 @@ trait HasPlugins
      */
     function enabledPlugins()
     {
-        return $this->hasMany(EnabledPlugin::class);
+        return $this->hasMany(EnabledPlugin::class)
+            ->orderBy('plugin_class');
     }
 
     /**
@@ -41,6 +42,9 @@ trait HasPlugins
      */
     function enablePlugin($pluginClass)
     {
+        // Runs the callback for enabling the plugin.
+        \App\Plugins\Kernel::enable($pluginClass, $this);
+
         return $this->enabledPlugins()->firstOrCreate([
             'plugin_class' => $pluginClass
         ]);

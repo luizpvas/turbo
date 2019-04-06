@@ -102,4 +102,24 @@ class BlogPost extends Model
     {
         return $this->belongsTo(\App\Models\Website::class);
     }
+
+    /**
+     * A blog post is written by an author.
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    function author()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
+
+    /**
+     * A post has many tags
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    function tags()
+    {
+        return $this->hasMany(BlogPostTag::class);
+    }
 }

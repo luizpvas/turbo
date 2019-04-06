@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Plugins;
 use App\Models\Website;
 use Illuminate\Http\Request;
 use App\Models\Plugins\BlogPost;
+use App\Models\Plugins\BlogEngine;
+use App\Models\Plugins\BlogPostTag;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Plugins\StoreBlogPostRequest;
 use App\Http\Requests\Plugins\UpdateBlogPostRequest;
@@ -29,15 +31,14 @@ class BlogPostsController extends Controller
     {
         $posts = BlogPost::fromWebsite(website())
             ->search(request('q'))
+            ->latest()
             ->paginate(20);
 
+        $engine = BlogEngine::defaultForWebsite(website());
 
-        add_sheet(
-            __(':website\'s plugins', ['website' => website()->name]),
-            route('websites.plugins.index', website())
-        );
+        add_plugins_sheet();
 
-        return view('plugins.blog_posts.index', compact('posts'));
+        return view('plugins.blog_posts.index', compact('posts', 'engine'));
     }
 
     /**
@@ -52,15 +53,8 @@ class BlogPostsController extends Controller
             'website_id' => website()->id
         ]);
 
-        add_sheet(
-            __(':website\'s plugins', ['website' => website()->name]),
-            route('websites.plugins.index', website())
-        );
-
-        add_sheet(
-            __('Blog posts'),
-            route('websites.blog_posts.index', website())
-        );
+        add_plugins_sheet();
+        add_blog_sheet();
 
         return view('plugins.blog_posts.create', compact('post'));
     }
@@ -75,12 +69,15 @@ class BlogPostsController extends Controller
      */
     function store(StoreBlogPostRequest $request)
     {
-        $blogPost = BlogPost::create(array_merge($request->validated(), [
-            'website_id' => website()->id
+        $post = BlogPost::create(array_merge($request->validated(), [
+            'website_id' => website()->id,
+            'author_id'  => auth()->id(),
         ]));
 
+        BlogPostTag::sync($post, request('tags', []));
+
         return js_redirect(
-            route('websites.blog_posts.edit', [website(), $blogPost])
+            route('websites.blog_posts.edit', [website(), $post])
         );
     }
 
@@ -98,15 +95,8 @@ class BlogPostsController extends Controller
         $post = BlogPost::findOrFail($id);
         $this->authorize('update', $post);
 
-        add_sheet(
-            __(':website\'s plugins', ['website' => website()->name]),
-            route('websites.plugins.index', website())
-        );
-
-        add_sheet(
-            __('Blog posts'),
-            route('websites.blog_posts.index', website())
-        );
+        add_plugins_sheet();
+        add_blog_sheet();
 
         return view('plugins.blog_posts.edit', compact('post'));
     }
@@ -122,6 +112,8 @@ class BlogPostsController extends Controller
     function update(UpdateBlogPostRequest $request)
     {
         $request->blogPost()->update($request->validated());
+
+        BlogPostTag::sync($request->blogPost(), request('tags', []));
 
         return js_redirect(
             route('websites.blog_posts.edit', [website(), $request->blogPost()])

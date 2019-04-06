@@ -70,6 +70,8 @@ class BlogPostsControllerTest extends TestCase
 
     function test_stores_a_new_blog_post()
     {
+        $this->withoutExceptionHandling();
+
         $this->actingAs($this->website->owner)
             ->postJson(route('websites.blog_posts.store', $this->website), [
                  'title'     => 'Grass city',
@@ -80,6 +82,7 @@ class BlogPostsControllerTest extends TestCase
 
         $this->assertDatabaseHas('plugins_blog_posts', [
             'website_id' => $this->website->id,
+            'author_id' => $this->website->owner->id,
             'title' => 'Grass city'
         ]);
     }

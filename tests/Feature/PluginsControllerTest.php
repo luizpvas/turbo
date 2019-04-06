@@ -12,7 +12,7 @@ class PluginsControllerTest extends TestCase
     function test_lists_enabled_plugins()
     {
         $website = factory('App\Models\Website')->create();
-        $website->enablePlugin('Blog');
+        $website->enablePlugin('App\Plugins\Blog');
 
         $this->actingAs($website->owner)
             ->get(route('websites.plugins.index', $website))

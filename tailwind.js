@@ -929,9 +929,11 @@ module.exports = {
   */
 
     plugins: [
-        require("tailwindcss/plugins/container")({
-            // center: true,
-            // padding: '1rem',
+        require("tailwindcss/plugins/container")({}),
+        require("tailwindcss-plugins/pagination")({
+            wrapper: "inline-flex list-reset rounded overflow-auto",
+            link:
+                "block bg-white px-2 py-1 border-r border-t text-sm border-b text-black no-underline"
         })
     ],
 

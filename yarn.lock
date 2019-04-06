@@ -6064,6 +6064,11 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
+tailwindcss-plugins@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/tailwindcss-plugins/-/tailwindcss-plugins-0.1.4.tgz#932c2de126e1cc0aa33d71484c609c903f8cd4f9"
+  integrity sha512-dekkBDVIjXVDJWKySO6gfjq4eyFdqrTZgWEMfk1GwVAVmcOUgc98UZcbSv6M/DrixR43P6mJH1Ntj3E4GplIjA==
+
 tailwindcss@^0.7.4:
   version "0.7.4"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-0.7.4.tgz#fb7926821d42eacdc12e6621a49d21f37a3ff9e9"

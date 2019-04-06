@@ -23,8 +23,7 @@ class DatabaseSeeder extends Seeder
             'owner_id' => $user->id,
             'name' => 'Teclia',
             'domain' => 'teclia.com',
-            'subdomain' => 'teclia',
-            'templates_dir' => '/home/luiz/Projects/teclia.turbo.app'
+            'subdomain' => 'teclia'
         ]);
     }
 }

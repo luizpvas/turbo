@@ -10,3 +10,9 @@
         <trix-editor input="body_html"></trix-editor>
     </div> 
 </div> 
+
+<div class="field" data-controller="tags" data-tags-tags="{{ json_encode($post->tags) }}">
+    <label class="field__label">@lang('Tags')</label>
+    <input class="field__input" placeholder="@lang('Ex: Cooking, Traveling.')">
+    <div data-target="tags.output" class="mt-1"></div>
+</div>

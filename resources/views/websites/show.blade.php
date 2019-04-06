@@ -20,7 +20,9 @@
             </div>
         </a>
 
-        <div class="flex items-center">
+        <a href="{{ route('websites.deployment_settings.index', $website) }}"
+           class="flex items-center no-underline text-black hover:bg-yellow-lighter"
+        >
             <div class="w-32 p-2 ml-2 mr-4 flex-no-shrink">
                 <img src="/img/undraw/server.svg" class="w-full">
             </div>

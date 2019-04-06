@@ -30,6 +30,19 @@ class Kernel
     }
 
     /**
+     * Runs the callback for enabiling the plugin.
+     *
+     * @param  string             $pluginClass PHP class of the plugin.
+     * @param  App\Models\Website $website     Website the plugin was enabled
+     * @return void
+     */
+    static function enable($pluginClass, $website)
+    {
+        $plugin = new $pluginClass;
+        $plugin->enable($website);
+    }
+
+    /**
      * Attempts to run the call from the registered plugins.
      *
      * @param  mixed             $call   At call

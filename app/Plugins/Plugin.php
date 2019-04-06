@@ -29,6 +29,14 @@ interface Plugin
     function rootPath($website);
 
     /**
+     * Callback called when the plugin is enabled.
+     *
+     * @param  App\Models\Website $website Current website
+     * @return void
+     */
+    function enable($website);
+
+    /**
      * Maybe runs the given at-call.
      *
      * @param  mixed             $call   Parsed at-call.

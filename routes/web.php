@@ -7,11 +7,21 @@ Route::domain(config('app.host'))->group(function () {
 
     Auth::routes();
 
+    // Core features
     Route::resource('websites', 'WebsitesController');
     Route::resource('websites.plugins', 'PluginsController');
     Route::resource('websites.enabled_plugins', 'EnabledPluginsController');
+    Route::resource('websites.attachments', 'AttachmentsController')->only(['store']);
+    Route::resource('websites.deployment_settings', 'DeploymentSettingsController')->only(['index']);
+
+    // Blog
     Route::resource('websites.blog_posts', 'Plugins\BlogPostsController');
-    Route::resource('deployments', 'DeploymentsController');
+    Route::resource('websites.blog_engines', 'Plugins\BlogEnginesController')->only(['edit', 'update']);
+    Route::resource('websites.blog_examples', 'Plugins\BlogExamplesController')->only(['index']);
+
+    // Announcements
+    Route::resource('websites.announcements', 'Plugins\AnnouncementsController');
+    Route::resource('websites.announcements_examples', 'Plugins\AnnouncementsExamplesController')->only(['index']);
 });
 
 Route::domain('{domain}')->group(function () {

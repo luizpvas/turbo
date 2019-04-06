@@ -10,13 +10,6 @@ use Illuminate\Filesystem\Filesystem;
 class DeploymentsController extends Controller
 {
     /**
-     * Builds the middleware
-     */
-    function __construct()
-    {
-    }
-
-    /**
      * POST /deployments
      * Creates a new deployment for the website.
      *

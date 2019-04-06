@@ -4,9 +4,12 @@ namespace App\Models\Plugins;
 
 use App\Models\Website;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Announcement extends Model
 {
+    use SoftDeletes;
+
     /**
      * Name of the table in the database
      * 
@@ -64,11 +67,17 @@ class Announcement extends Model
      */
     function setIsHighlightedAttribute($value)
     {
-        if ($value === true) {
-            self::fromWebsite($this->website)->update(['is_highlighted' => false]);
+        $isOn = !(!$value || $value === 'off');
+
+        if ($isOn) {
+            self::fromWebsite(website() ?? $this->website)
+                ->when($this->id, function ($query, $id) {
+                    $query->where('id', '<>', $id);
+                })
+                ->update(['is_highlighted' => false]);
         }
 
-        $this->attributes['is_highlighted'] = $value;
+        $this->attributes['is_highlighted'] = $isOn;
     }
 
     /**

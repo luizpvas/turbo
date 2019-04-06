@@ -21,9 +21,9 @@ class CreateWebsitesTable extends Migration
             $table->string('subdomain')->unique();
             $table->string('private_key')->unique();
 
-            $table->string('templates_version')
-                ->nullable()
-                ->comment('current version of the templates in the database');
+            $table->integer('templates_version')
+                ->default(0)
+                ->comment('current version of the templates in the database. incremented 1 by 1.');
 
             $table->timestamps();
 

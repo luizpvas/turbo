@@ -13,7 +13,7 @@ class WebsiteHasPluginsTest extends TestCase
     {
         $website = factory('App\Models\Website')->create();
 
-        $website->enablePlugin('Blog');
+        $website->enablePlugin('App\Plugins\Blog');
 
         $this->assertCount(1, $website->enabledPlugins);
     }
@@ -22,8 +22,8 @@ class WebsiteHasPluginsTest extends TestCase
     {
         $website = factory('App\Models\Website')->create();
 
-        $website->enablePlugin('Blog');
-        $website->disablePlugin('Blog');
+        $website->enablePlugin('App\Plugins\Blog');
+        $website->disablePlugin('App\Plugins\Blog');
 
         $this->assertCount(0, $website->enabledPlugins);
     }

@@ -8,6 +8,9 @@ $factory->define(BlogPost::class, function (Faker $faker) {
         'website_id' => function () {
             return factory('App\Models\Website')->create()->id;
         },
+        'author_id' => function () {
+            return factory('App\Models\User')->create()->id;
+        },
         'title' => $faker->sentence(5),
         'slug' => $faker->unique()->slug,
         'body_html' => '<div>Grass city</div>',

@@ -21,6 +21,15 @@ class Website extends Model
     protected $guarded = [];
 
     /**
+     * Attributes that should be casted to non-string PHP types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'templates_version' => 'integer'
+    ];
+
+    /**
      * Registers the event callbacks.
      *
      * @return void
@@ -125,21 +134,24 @@ class Website extends Model
             throw new \Exception("directory not found: " . $dir);
         }
 
-        $version = Str::random(15);
+        $version = $this->templates_version + 1;
+
+        $this->update(['templates_version' => $version]);
+
+        $deployment = $this->deployments()->create(['templates_version' => $version]);
 
         $files = (new Filesystem())->allFiles($dir);
         foreach ($files as $file) {
             $html = file_get_contents($file->getPathname());
             $this->templates()->create([
+                'deployment_id' => $deployment->id,
                 'version' => $version,
                 'path' => str_replace($dir, "", $file->getPathname()),
                 'html' => $html
             ]);
         }
 
-        $this->update(['templates_version' => $version]);
-
-        return $this->deployments()->create(['templates_version' => $version]);
+        return $deployment;
     }
 
     /**
