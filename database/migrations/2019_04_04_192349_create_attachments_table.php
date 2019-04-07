@@ -16,7 +16,7 @@ class CreateAttachmentsTable extends Migration
         Schema::create('attachments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('website_id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('creator_id');
             $table->string('name');
             $table->string('mime');
             $table->string('url', 300);
@@ -26,6 +26,11 @@ class CreateAttachmentsTable extends Migration
             $table->foreign('website_id')
                 ->references('id')
                 ->on('websites')
+                ->onDelete('cascade');
+
+            $table->foreign('creator_id')
+                ->references('id')
+                ->on('users')
                 ->onDelete('cascade');
         });
     }

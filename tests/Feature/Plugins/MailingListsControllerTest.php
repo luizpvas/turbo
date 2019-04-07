@@ -68,13 +68,58 @@ class MailingListsControllerTest extends TestCase
 
     function test_shows_mailing_list()
     {
-        $this->mailingList = factory('App\Models\Plugins\MailingList')->create([
+        $mailingList = factory('App\Models\Plugins\MailingList')->create([
             'website_id' => $this->website->id
         ]);
 
         $this->actingAs($this->website->owner)
-            ->get(route('websites.mailing_lists.show', [$this->website, $this->mailingList]))
+            ->get(route('websites.mailing_lists.show', [$this->website, $mailingList]))
             ->assertStatus(200);
+    }
+
+    function test_renders_the_edit_form()
+    {
+        $mailingList = factory('App\Models\Plugins\MailingList')->create([
+            'website_id' => $this->website->id
+        ]);
+
+        $this->actingAs($this->website->owner)
+            ->get(route('websites.mailing_lists.edit', [$this->website, $mailingList]))
+            ->assertStatus(200);
+    }
+
+    function test_validates_attributes_on_update()
+    {
+        $mailingList = factory('App\Models\Plugins\MailingList')->create([
+            'website_id' => $this->website->id
+        ]);
+
+        $this->actingAs($this->website->owner)
+            ->putJson(route('websites.mailing_lists.update', [$this->website, $mailingList]), [
+                 'title' => '',
+                 'subscribed_success_template' => '',
+                 'already_subscribed_template' => ''
+            ])
+            ->assertJsonValidationErrors(['name', 'subscribed_success_template', 'already_subscribed_template']);
+    }
+
+    function test_updates_the_mailing_list()
+    {
+        $mailingList = factory('App\Models\Plugins\MailingList')->create([
+            'website_id' => $this->website->id
+        ]);
+
+        $this->actingAs($this->website->owner)
+            ->putJson(route('websites.mailing_lists.update', [$this->website, $mailingList]), [
+                 'name' => 'Updated name',
+                 'subscribed_success_template' => 'Updated template',
+                 'already_subscribed_template' => 'Updated template'
+            ])
+            ->assertStatus(200);
+
+        $this->assertEquals('Updated name', $mailingList->fresh()->name);
+        $this->assertEquals('Updated template', $mailingList->fresh()->subscribed_success_template);
+        $this->assertEquals('Updated template', $mailingList->fresh()->already_subscribed_template);
     }
 
     function test_archives_a_mailing_list()

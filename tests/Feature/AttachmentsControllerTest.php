@@ -11,6 +11,25 @@ class AttachmentsControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    function test_renders_attachments_on_index()
+    {
+        $website = factory('App\Models\Website')->create();
+
+        $attachment1 = factory('App\Models\Attachment')->create([
+            'website_id' => $website->id
+        ]);
+
+        $attachment2 = factory('App\Models\Attachment')->create([
+            'website_id' => $website->id
+        ]);
+
+        $this->actingAs($website->owner)
+            ->get(route('websites.attachments.index', $website))
+            ->assertStatus(200)
+            ->assertSee($attachment1->name)
+            ->assertSee($attachment2->name);
+    }
+
     function test_saves_file_to_disk()
     {
         Storage::fake('public');
@@ -22,7 +41,7 @@ class AttachmentsControllerTest extends TestCase
             ->post(route('websites.attachments.store', $website), [
                  'file' => $file
             ])
-            ->assertStatus(201);
+            ->assertStatus(200);
 
         Storage::disk('public')->assertExists('attachments/' . $file->hashName());
     }
@@ -38,11 +57,11 @@ class AttachmentsControllerTest extends TestCase
             ->post(route('websites.attachments.store', $website), [
                  'file' => $file
             ])
-            ->assertStatus(201);
+            ->assertStatus(200);
 
         $this->assertDatabaseHas('attachments', [
             'website_id' => $website->id,
-            'user_id' => $website->owner->id,
+            'creator_id' => $website->owner->id,
             'name' => 'avatar.jpg',
             'size_in_bytes' => 695,
             'mime' => 'image/jpeg'

@@ -2353,6 +2353,37 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/alert.js":
+/*!*******************************!*\
+  !*** ./resources/js/alert.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  successFromElement: function successFromElement(element, message) {
+    var _element$getBoundingC = element.getBoundingClientRect(),
+        top = _element$getBoundingC.top,
+        left = _element$getBoundingC.left,
+        width = _element$getBoundingC.width,
+        height = _element$getBoundingC.height;
+
+    var elm = document.createElement("div");
+    elm.style.top = window.scrollY + top + height + "px";
+    elm.style.left = left + width + "px";
+    elm.className = "absolute bg-white shadow border rounded p-1 text-sm text-green-dark";
+    elm.innerHTML = "&#10004; " + message;
+    document.body.appendChild(elm);
+    setTimeout(function () {
+      document.body.removeChild(elm);
+    }, 1000);
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -2387,6 +2418,8 @@ turbolinks__WEBPACK_IMPORTED_MODULE_2___default.a.start();
 
 var map = {
 	"./app_dropdown_menu_controller.js": "./resources/js/controllers/app_dropdown_menu_controller.js",
+	"./attachment_item_controller.js": "./resources/js/controllers/attachment_item_controller.js",
+	"./attachments_controller.js": "./resources/js/controllers/attachments_controller.js",
 	"./form_controller.js": "./resources/js/controllers/form_controller.js",
 	"./html_editor_controller.js": "./resources/js/controllers/html_editor_controller.js",
 	"./remote_link_controller.js": "./resources/js/controllers/remote_link_controller.js",
@@ -2485,6 +2518,231 @@ function (_Controller) {
 
   return _default;
 }(stimulus__WEBPACK_IMPORTED_MODULE_0__["Controller"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/controllers/attachment_item_controller.js":
+/*!****************************************************************!*\
+  !*** ./resources/js/controllers/attachment_item_controller.js ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _default; });
+/* harmony import */ var stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! stimulus */ "./node_modules/stimulus/index.js");
+/* harmony import */ var _alert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../alert */ "./resources/js/alert.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+var _default =
+/*#__PURE__*/
+function (_Controller) {
+  _inherits(_default, _Controller);
+
+  function _default() {
+    _classCallCheck(this, _default);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(_default).apply(this, arguments));
+  }
+
+  _createClass(_default, [{
+    key: "connect",
+    value: function connect() {
+      var _this = this;
+
+      this.deleteTarget.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        console.log("delete clicked");
+      });
+      this.copyTarget.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        var input = document.createElement("input");
+        input.value = _this.copyTarget.href;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        document.body.removeChild(input);
+        _alert__WEBPACK_IMPORTED_MODULE_1__["default"].successFromElement(_this.copyTarget, "URL copied to the clipboard.");
+      });
+    }
+  }]);
+
+  return _default;
+}(stimulus__WEBPACK_IMPORTED_MODULE_0__["Controller"]);
+
+_defineProperty(_default, "targets", ["delete", "copy"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/controllers/attachments_controller.js":
+/*!************************************************************!*\
+  !*** ./resources/js/controllers/attachments_controller.js ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _default; });
+/* harmony import */ var stimulus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! stimulus */ "./node_modules/stimulus/index.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var _default =
+/*#__PURE__*/
+function (_Controller) {
+  _inherits(_default, _Controller);
+
+  function _default() {
+    _classCallCheck(this, _default);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(_default).apply(this, arguments));
+  }
+
+  _createClass(_default, [{
+    key: "connect",
+    value: function connect() {
+      var _this = this;
+
+      this.counter = 0;
+      this.dropTarget.addEventListener("dragenter", function (ev) {
+        _this.counter += 1;
+        console.log("enter");
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        _this.highlight();
+      }, false);
+      this.dropTarget.addEventListener("dragleave", function (ev) {
+        _this.counter -= 1;
+        console.log("leave");
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        if (_this.counter == 0) {
+          _this.unhighlight();
+        }
+      }, false);
+      this.dropTarget.addEventListener("dragover", function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+      }, false);
+      this.dropTarget.addEventListener("drop", function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        _this.unhighlight();
+
+        var files = ev.dataTransfer.files;
+
+        _this.uploadFile(files[0]);
+      }, false);
+    }
+  }, {
+    key: "highlight",
+    value: function highlight() {
+      this.dropTarget.classList.add("text-green");
+      this.dropTarget.classList.add("font-bold");
+    }
+  }, {
+    key: "unhighlight",
+    value: function unhighlight() {
+      this.dropTarget.classList.remove("text-green");
+      this.dropTarget.classList.remove("font-bold");
+    }
+  }, {
+    key: "uploadFile",
+    value: function uploadFile(file) {
+      var _this2 = this;
+
+      var url = "/websites/".concat(this.data.get("websiteId"), "/attachments");
+      var xhr = new XMLHttpRequest();
+      var data = new FormData();
+      xhr.open("POST", url, true);
+      xhr.addEventListener("readystatechange", function (e) {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          var _data = JSON.parse(xhr.responseText);
+
+          _this2.outputTarget.insertAdjacentHTML("afterbegin", _data.item);
+        } else if (xhr.readyState == 4 && xhr.status != 200) {
+          console.log("something went wrong");
+        }
+
+        _this2.clearProgress();
+      });
+
+      xhr.upload.onprogress = function (ev) {
+        console.log("progress...");
+        var pct = Math.ceil(ev.loaded / ev.total * 100);
+
+        _this2.renderProgress(pct);
+      };
+
+      xhr.setRequestHeader("X-Csrf-Token", document.querySelector('meta[name="csrf-token"]').content);
+      data.append("file", file);
+      xhr.send(data);
+    }
+  }, {
+    key: "renderProgress",
+    value: function renderProgress(pct) {
+      this.progressTarget.innerHTML = "\n          <div class=\"bg-grey-light h-4 w-full rounded\">\n            <div class=\"bg-blue h-4 rounded\" style=\"width: ".concat(pct, "%;\"></div>\n          </div>\n        ");
+    }
+  }, {
+    key: "clearProgress",
+    value: function clearProgress() {
+      this.progressTarget.innerHTML = "";
+    }
+  }]);
+
+  return _default;
+}(stimulus__WEBPACK_IMPORTED_MODULE_0__["Controller"]);
+
+_defineProperty(_default, "targets", ["drop", "progress", "output"]);
 
 
 

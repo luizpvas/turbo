@@ -11,7 +11,7 @@ Route::domain(config('app.host'))->group(function () {
     Route::resource('websites', 'WebsitesController');
     Route::resource('websites.plugins', 'PluginsController');
     Route::resource('websites.enabled_plugins', 'EnabledPluginsController');
-    Route::resource('websites.attachments', 'AttachmentsController')->only(['store']);
+    Route::resource('websites.attachments', 'AttachmentsController')->only(['index', 'store']);
     Route::resource('websites.deployment_settings', 'DeploymentSettingsController')->only(['index']);
 
     // Blog
