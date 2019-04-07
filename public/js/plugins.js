@@ -2427,7 +2427,7 @@ function (_Controller) {
         ev.preventDefault();
         var data = new FormData(_this.element);
         data.append("mailing_list_id", _this.data.get("id"));
-        fetch("http://turbo.app:8000/api/mailing_list_subscriptions", {
+        fetch("https://admin.turboroute.app/api/mailing_list_subscriptions", {
           method: "POST",
           headers: {
             Accept: "application/json"

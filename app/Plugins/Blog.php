@@ -93,6 +93,8 @@ class Blog implements Plugin
             return '<?= \App\Plugins\Blog::renderTags(\App\Plugins\Blog::getPostFromRequest()->tags) ?>';
         case 'blog-post-author-name':
             return '<?= \App\Plugins\Blog::getPostFromRequest()->author->name ?>';
+        case 'blog-post-published-at':
+            return '<?= \App\Plugins\Blog::getPostFromRequest("published_at")->diffForHumans() ?>';
         case 'blog-post-related':
             return 'Blog post related';
         default:

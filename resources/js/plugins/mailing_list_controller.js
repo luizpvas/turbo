@@ -8,13 +8,16 @@ export default class extends Controller {
             let data = new FormData(this.element);
             data.append("mailing_list_id", this.data.get("id"));
 
-            fetch("http://turbo.app:8000/api/mailing_list_subscriptions", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json"
-                },
-                body: data
-            })
+            fetch(
+                "https://admin.turboroute.app/api/mailing_list_subscriptions",
+                {
+                    method: "POST",
+                    headers: {
+                        Accept: "application/json"
+                    },
+                    body: data
+                }
+            )
                 .then(res => res.text())
                 .then(res => {
                     this.element.innerHTML = res;
