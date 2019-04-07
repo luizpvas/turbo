@@ -12,6 +12,22 @@
   width: 720px;
 }
 
+.sheet__header {
+  display: flex;
+  align-items: center;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.sheet__title {
+  margin-right: auto;
+}
+
+.sheet__actions {
+}
+
 .backsheet {
   background-color: #fff;
   margin-left: auto;
@@ -107,6 +123,15 @@
 .button--primary:hover {
   background-color: #2779bd;
   color: #fff;
+}
+.tips {
+  border-width: 2px;
+  border-color: #ffed4a;
+  border-radius: .25rem;
+  padding: .5rem;
+  background-color: #fcfbeb;
+  color: #684f1d;
+  font-size: .875rem;
 }
 /**
  * This injects Tailwind's base styles, which is a combination of

@@ -39,6 +39,7 @@
 @import "sheet.css";
 @import "field.css";
 @import "button.css";
+@import "tips.css";
 
 /**
  * This injects all of Tailwind's utility classes, generated based on your

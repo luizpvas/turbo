@@ -26,7 +26,8 @@ class StoreBlogPostRequest extends FormRequest
         return [
             'title' => 'required',
             'body_html' => 'required',
-            'body_text' => 'required'
+            'body_text' => 'required',
+            'published_at' => 'nullable'
         ];
     }
 }

@@ -17,10 +17,10 @@
         <div class="text-center py-3">
             @lang('Logged in as')
 
-            <select class="border bg-white">
+            <select class="border bg-white" data-controller="app-dropdown-menu">
                 <option>{{ auth()->user()->name }}</option>
-                <option>@lang('My websites')</option>
-                <option>@lang('Logout')</option>
+                <option value="websites">@lang('My websites')</option>
+                <option value="logout">@lang('Logout')</option>
             </select>
         </div>
     @endif

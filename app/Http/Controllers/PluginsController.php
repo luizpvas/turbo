@@ -26,6 +26,10 @@ class PluginsController extends Controller
     {
         $plugins = $website->enabledPlugins;
 
+        if($plugins->count() == 0) {
+            return redirect()->route('websites.plugins.create', $website);
+        }
+
         return view('plugins.index', compact('website', 'plugins'));
     }
 
@@ -38,12 +42,9 @@ class PluginsController extends Controller
      */
     function create(Website $website)
     {
-        $availablePlugins = \App\Plugins\Kernel::availablePlugins();
+        add_plugins_sheet();
 
-        add_sheet(
-            __(':website\'s plugins', ['website' => $website->name]),
-            route('websites.plugins.index', $website)
-        );
+        $availablePlugins = \App\Plugins\Kernel::availablePlugins();
 
         return view('plugins.create', compact('website', 'availablePlugins'));
     }

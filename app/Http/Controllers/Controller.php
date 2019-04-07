@@ -10,18 +10,4 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
-    /**
-     * Returns a JSON-encoded redirect.
-     *
-     * @param string $route Route to redirects
-     *
-     * @return array
-     */
-    function jsonRedirect($route)
-    {
-        return [
-            'redirect' => $route
-        ];
-    }
 }

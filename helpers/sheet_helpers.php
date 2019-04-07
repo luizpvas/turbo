@@ -51,6 +51,31 @@ function add_announcements_sheet()
 }
 
 /**
+ * Add 'Mailing lists' to the sheets.
+ *
+ * @return void
+ */
+function add_mailing_lists_sheet()
+{
+    add_sheet(
+        __('Mailing lists'),
+        route('websites.mailing_lists.index', website())
+    );
+}
+
+/**
+ * Adds mailing sheet.
+ *
+ * @param  App\Models\Plugins\MailingList $mailingList Current mailing list
+ * @return void
+ */
+function add_mailing_list_sheet($mailingList)
+{
+    add_sheet($mailingList->name, route('websites.mailing_lists.show', [website(), $mailingList]));
+}
+
+
+/**
  * Returns the list of sheeets, in order they were stacked.
  *
  * @return array

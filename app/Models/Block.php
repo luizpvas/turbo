@@ -61,7 +61,7 @@ class Block
             $hasParams = strpos($this->source, "(") !== false;
 
             if ($hasParams) {
-                preg_match("/(\@(\w+)\(([^\)]+)\))/", $this->source, $match);
+                preg_match("/(\@([\w\-\_]+)\(([^\)]+)\))/", $this->source, $match);
             } else {
                 $match = [
                     null,

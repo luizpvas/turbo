@@ -3,12 +3,13 @@
 namespace App\Models\Plugins;
 
 use App\Models\Website;
+use App\Models\Traits\WebsiteScoped;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Announcement extends Model
 {
-    use SoftDeletes;
+    use WebsiteScoped, SoftDeletes;
 
     /**
      * Name of the table in the database
@@ -32,19 +33,6 @@ class Announcement extends Model
     protected $casts = [
         'is_highlighted' => 'boolean'
     ];
-
-    /**
-     * Scopes a query to filter announcements belonging to a website.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query   DB Query
-     * @param Website                               $website Current website
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    function scopeFromWebsite($query, $website)
-    {
-        return $query->where('website_id', $website->id);
-    }
 
     /**
      * Scopes a query to filter announcements belonging to a website.
@@ -78,15 +66,5 @@ class Announcement extends Model
         }
 
         $this->attributes['is_highlighted'] = $isOn;
-    }
-
-    /**
-     * An announcement belongs to a website.
-     *
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    function website()
-    {
-        return $this->belongsTo(Website::class);
     }
 }

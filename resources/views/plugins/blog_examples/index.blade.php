@@ -12,7 +12,10 @@
         @else
             <div class="mt-4">
                 <a class="block p-1" href="{{ route('websites.blog_examples.index', [website(), 'view' => 'example_index']) }}">
-                    @lang('List of posts')
+                    @lang('Paginate list of posts')
+                </a>
+                <a class="block p-1" href="{{ route('websites.blog_examples.index', [website(), 'view' => 'example_latest']) }}">
+                    @lang('List of the latest posts (good for your home page)')
                 </a>
                 <a class="block p-1" href="{{ route('websites.blog_examples.index', [website(), 'view' => 'example_show']) }}">
                     @lang('Individual post page')

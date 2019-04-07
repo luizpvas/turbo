@@ -23,6 +23,8 @@ class BlogTest extends TestCase
             'title' => 'Grass city',
         ]);
 
+        travel_to(now()->addSeconds(10));
+
         $this->post2 = factory('App\Models\Plugins\BlogPost')->create([
             'website_id' => $this->website->id
         ]);
@@ -54,7 +56,7 @@ class BlogTest extends TestCase
         $this->withoutExceptionHandling();
 
         $this->get($this->website->route('/blog/post/grass-city'))
-            ->assertSee(e($this->post1->author->name));
+            ->assertSee($this->post1->author->name);
     }
 
     function test_renders_paginated_blog_items()
@@ -83,11 +85,21 @@ class BlogTest extends TestCase
     function test_renders_post_author_on_index()
     {
         $this->get($this->website->route('/blog/index'))
-            ->assertSee(e($this->post1->author->name))
-            ->assertSee(e($this->post2->author->name));
+            ->assertSee($this->post1->author->name)
+            ->assertSee($this->post2->author->name);
     }
 
-    function test_renders_post_related()
+    function test_renders_latest_blog_posts()
     {
+        travel_to(now()->addSeconds(10));
+
+        $post3 = factory('App\Models\Plugins\BlogPost')->create([
+            'website_id' => $this->website->id
+        ]);
+
+        $this->get($this->website->route('/latest_blog_posts'))
+            ->assertSee($post3->title)
+            ->assertSee($this->post2->title)
+            ->assertDontSee($this->post1->title);
     }
 }

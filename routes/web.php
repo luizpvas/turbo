@@ -22,6 +22,10 @@ Route::domain(config('app.host'))->group(function () {
     // Announcements
     Route::resource('websites.announcements', 'Plugins\AnnouncementsController');
     Route::resource('websites.announcements_examples', 'Plugins\AnnouncementsExamplesController')->only(['index']);
+
+    // Mailing lists
+    Route::resource('websites.mailing_lists', 'Plugins\MailingListsController');
+    Route::resource('websites.mailing_list_examples', 'Plugins\MailingListExamplesController');
 });
 
 Route::domain('{domain}')->group(function () {

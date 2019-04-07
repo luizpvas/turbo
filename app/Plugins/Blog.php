@@ -70,6 +70,11 @@ class Blog implements Plugin
             return '<?php foreach(\App\Plugins\Blog::paginatedPosts() as $item) { ?>';
         case 'end-blog-posts-paginated-list':
             return '<?php } ?>';
+        case 'blog-posts-latest':
+            $render->peek('end-blog-posts-latest');
+            return '<?php foreach(\App\Plugins\Blog::latestPosts('.$call['params'][0].') as $item) { ?>';
+        case 'end-blog-posts-latest':
+            return '<?php } ?>';
         case 'blog-post-list-item-title':
             return '<?= $item->title ?>';
         case 'blog-post-list-item-published-at':
@@ -127,13 +132,32 @@ class Blog implements Plugin
     static function paginatedPosts()
     {
         return BlogPost::fromWebsite(website())
+            ->whereNotNull('published_at')
             ->orderBy('published_at', 'desc')
             ->paginate(10);
     }
 
     /**
+     * Fetches the n latest posts.
+     *
+     * @param  integer $n Amount of posts
+     * @return mixed
+     */
+    static function latestPosts($n = 3)
+    {
+        $n = min($n, 10);
+
+        return BlogPost::fromWebsite(website())
+            ->whereNotNull('published_at')
+            ->orderBy('published_at', 'desc')
+            ->take($n)
+            ->get();
+    }
+
+    /**
      * Fetches the blog post record from the request.
      *
+     * @param  string|null $attr Attribute of the post
      * @return App\Models\Plugins\BlogPost
      */
     static function getPostFromRequest($attr = null)

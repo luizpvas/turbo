@@ -12,8 +12,9 @@ class Kernel
      * @var array
      */
     protected $plugins = [
+        Announcement::class,
         Blog::class,
-        Announcement::class
+        MailingList::class,
     ];
 
     /**
@@ -57,6 +58,7 @@ class Kernel
             }
         }
 
-        throw new UnknownAtCallException($call);
+        return '@' . $call['call'];
+        // throw new UnknownAtCallException($call);
     }
 }

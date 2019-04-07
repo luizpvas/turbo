@@ -24,6 +24,13 @@ class WebsiteRouterTest extends TestCase
         );
     }
 
+    function test_routes_no_path_to_index()
+    {
+        $this->assertNotNull(
+            $this->website->routeTemplate('/')
+        );
+    }
+
     function test_routes_without_extension()
     {
         $this->assertNotNull(
@@ -48,6 +55,7 @@ class WebsiteRouterTest extends TestCase
     function test_doesnt_route_inexisting_file()
     {
         $this->expectException(\App\Exceptions\TemplateNotFoundException::class);
+
         $this->website->routeTemplate('/non-existing-file');
     }
 }

@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\WebsiteScoped;
 use Illuminate\Database\Eloquent\Model;
 
 class Deployment extends Model
 {
+    use WebsiteScoped;
+
     /**
      * Disable mass assignment exceptions.
      *
@@ -21,19 +24,6 @@ class Deployment extends Model
     protected $casts = [
         'templates_version' => 'integer'
     ];
-
-    /**
-     * Scopes a query to filter deployments belonging to a website.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query   DB Query
-     * @param Website                               $website Current website
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    function scopeFromWebsite($query, $website)
-    {
-        return $query->where('website_id', $website->id);
-    }
 
     /**
      * A deployment is associated with many templates of the current version.

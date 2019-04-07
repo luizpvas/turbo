@@ -3,9 +3,12 @@
 namespace App\Models\Plugins;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\WebsiteScoped;
 
 class BlogPost extends Model
 {
+    use WebsiteScoped;
+
     /**
      * Name of the database table.
      * 
@@ -39,7 +42,11 @@ class BlogPost extends Model
         parent::boot();
 
         self::creating(function ($post) {
-            $post->slug = $post->generateSlugFromTitle();
+            $post->slug = self::generateSlug($post->title);
+        });
+
+        self::updating(function ($post) {
+            $post->slug = self::generateSlug($post->title);
         });
     }
 
@@ -61,19 +68,6 @@ class BlogPost extends Model
     }
 
     /**
-     * Scopes a query to filter blog posts belonging to a website.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query   DB Query
-     * @param Website                               $website Current website
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    function scopeFromWebsite($query, $website)
-    {
-        return $query->where('website_id', $website->id);
-    }
-
-    /**
      * Checks if the post is published.
      *
      * @return boolean
@@ -86,21 +80,22 @@ class BlogPost extends Model
     /**
      * Generates a slug from the title
      *
+     * @param  string $title Post title
      * @return void
      */
-    function generateSlugFromTitle()
+    static function generateSlug($title)
     {
-        return str_replace(" ", "-", strtolower($this->title));
-    }
-
-    /**
-     * A blog post belongs to a website.
-     *
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    function website()
-    {
-        return $this->belongsTo(\App\Models\Website::class);
+        $title = strtolower($title);
+        $title = str_replace('ç', 'c', $title);
+        $title = str_replace('ã', 'a', $title);
+        $title = str_replace('á', 'a', $title);
+        $title = str_replace('é', 'a', $title);
+        $title = str_replace('â', 'a', $title);
+        $title = str_replace('õ', 'a', $title);
+        $title = preg_replace('/[\W]+/', ' ', $title);
+        $title = preg_replace('/\s{2,}/', ' ', $title);
+        $title = trim($title);
+        return str_replace(" ", "-", $title);
     }
 
     /**

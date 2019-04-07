@@ -3,6 +3,17 @@
   width: 720px;
 }
 
+.sheet__header {
+  @apply .flex .items-center .py-2 .px-4;
+}
+
+.sheet__title {
+  @apply .mr-auto;
+}
+
+.sheet__actions {
+}
+
 .backsheet {
   @apply .bg-white .mx-auto .py-2 .px-3 .bg-grey-lighter .rounded-t .text-grey-darker;
   width: 680px;

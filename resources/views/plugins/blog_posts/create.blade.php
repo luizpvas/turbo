@@ -15,8 +15,15 @@
 
             @include('plugins.blog_posts.form')
 
-            <button class="button button--primary" type="submit" data-target="form.submit">
+            <button class="button button" type="submit" data-target="form.submit">
                 @lang('Save as draft')
+            </button>
+
+            <button class="button button--primary"
+                    type="submit"
+                    data-additional-attributes="{{ json_encode(['published_at' => now()->toDateTimeString()]) }}"
+            >
+                @lang('Publish (make it public)')
             </button>
         </form>
     </div>

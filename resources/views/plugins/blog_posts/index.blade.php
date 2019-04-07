@@ -34,7 +34,7 @@
             </div>
 
             <div class="font-bold text-xl">
-                {{ $post->title }} #{{ $post->id }}
+                {{ $post->title }}
             </div>
 
 

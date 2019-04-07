@@ -23,7 +23,7 @@ class TemplatesController extends Controller
      *
      * @return Illuminate\Http\Response
      */
-    function index($domain, $path)
+    function index($domain, $path = '/')
     {
         return request()->get('website')->evalTemplate($path);
     }

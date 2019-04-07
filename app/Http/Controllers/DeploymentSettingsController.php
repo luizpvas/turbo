@@ -25,7 +25,7 @@ class DeploymentSettingsController extends Controller
         $deployments = Deployment::fromWebsite(website())
             ->with('templates')
             ->latest()
-            ->paginate(10);
+            ->paginate(5);
 
         return view('deployment_settings.index', compact('deployments'));
     }

@@ -195,7 +195,7 @@ class Render
     {
         $flags = PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY;
         $this->splitBlocks = collect(
-            preg_split("/(\@\w+\([^\)]+\))|(\@[\w\-\_]+)/", $this->template, -1, $flags)
+            preg_split("/(\@[\w\-\_]+\([^\)]+\))|(\@[\w\-\_]+)/", $this->template, -1, $flags)
         );
     }
 }

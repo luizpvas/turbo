@@ -19,6 +19,12 @@
                 @lang("Everything is ready for your first deployment!")
             </div>
         @endforelse
+
+        @if($deployments->hasPages())
+            <div class="mt-6">
+                {!! $deployments->appends($_GET)->render() !!}
+            </div>
+        @endif
     </div>
 
     <div class="p-6 text-grey-darkest">

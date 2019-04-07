@@ -19,7 +19,11 @@ trait Router
             try {
                 return $this->readTemplate($path);
             } catch(\Exception $e) {
-                return $this->readTemplate($this->removeLatestPathPart($path));
+                if ($this->hasMoreThanOnePathPart($path)) {
+                    return $this->readTemplate($this->removeLatestPathPart($path));
+                }
+
+                throw $e;
             }
         } catch(\Exception $e) {
             throw new TemplateNotFoundException($this, $path);
@@ -50,6 +54,10 @@ trait Router
      */
     function normalizeRoute($route)
     {
+        if ($route === '' || $route === '/') {
+            return '/index.html';
+        }
+
         $route = str_replace(".html", "", $route) . ".html";
 
         if (strpos($route, "/") === 0) {
@@ -57,6 +65,18 @@ trait Router
         }
 
         return "/" . $route;
+    }
+
+    /**
+     * Checks if the path has at least two parts.
+     * For exmaple, /one/two.
+     *
+     * @param  string $path URL path
+     * @return boolean
+     */
+    function hasMoreThanOnePathPart($path)
+    {
+        return substr_count($path, '/') >= 2;
     }
 
     /**
