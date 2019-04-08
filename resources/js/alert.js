@@ -3,8 +3,8 @@ export default {
         let { top, left, width, height } = element.getBoundingClientRect();
 
         let elm = document.createElement("div");
-        elm.style.top = window.scrollY + top + height + "px";
-        elm.style.left = left + width + "px";
+        elm.style.top = window.scrollY + top + height - 5 + "px";
+        elm.style.left = left + width - 5 + "px";
         elm.className =
             "absolute bg-white shadow border rounded p-1 text-sm text-green-dark";
         elm.innerHTML = "&#10004; " + message;

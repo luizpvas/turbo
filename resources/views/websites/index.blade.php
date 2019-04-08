@@ -22,10 +22,18 @@
                 </span>
             </a>
 
-            @lang('Acesse o site pelo <a href=":domain">domínio</a> ou <a href=":subdomain">subdomínio</a>', [
-                'domain' => 'https://' . $website->domain,
-                'subdomain' => $website->route('/')
-            ])
+            <div class="text-sm">
+                @if($website->domain)
+                    @lang('Visit your website by <a href=":domain">:domain</a> or the <a href=":subdomain" target="_blank">:subdomain</a>', [
+                        'domain' => 'https://' . $website->domain,
+                        'subdomain' => $website->route('/')
+                    ])
+                @else
+                    @lang('Visit your website by the subdomain <a href=":subdomain" target="_blank">:subdomain</a>', [
+                        'subdomain' => $website->route('/')
+                    ])
+                @endif
+            </div>
         </div>
     @endforeach
 @endsection

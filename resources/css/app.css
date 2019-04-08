@@ -66,6 +66,10 @@
  * @import "utilities/skew-transforms";
  */
 
+a {
+  @apply .text-blue;
+}
+
 h1 {
   @apply .text-2xl;
 }

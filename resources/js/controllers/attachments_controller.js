@@ -1,10 +1,15 @@
 import { Controller } from "stimulus";
 
 export default class extends Controller {
-    static targets = ["drop", "progress", "output"];
+    static targets = ["drop", "progress", "output", "upload"];
 
     connect() {
         this.counter = 0;
+
+        this.uploadTarget.addEventListener("change", ev => {
+            let files = this.uploadTarget.files;
+            this.uploadFiles(Array.from(files));
+        });
 
         this.dropTarget.addEventListener(
             "dragenter",
@@ -49,7 +54,7 @@ export default class extends Controller {
                 this.unhighlight();
 
                 let files = ev.dataTransfer.files;
-                this.uploadFile(files[0]);
+                this.uploadFiles(Array.from(files));
             },
             false
         );
@@ -65,7 +70,11 @@ export default class extends Controller {
         this.dropTarget.classList.remove("font-bold");
     }
 
-    uploadFile(file) {
+    uploadFiles(files) {
+        if (files.length == 0) {
+            return;
+        }
+
         let url = `/websites/${this.data.get("websiteId")}/attachments`;
         let xhr = new XMLHttpRequest();
         let data = new FormData();
@@ -73,6 +82,11 @@ export default class extends Controller {
         xhr.open("POST", url, true);
 
         xhr.addEventListener("readystatechange", e => {
+            if (xhr.readyState == 4) {
+                files.shift();
+                this.uploadFiles(files);
+            }
+
             if (xhr.readyState == 4 && xhr.status == 200) {
                 let data = JSON.parse(xhr.responseText);
                 this.outputTarget.insertAdjacentHTML("afterbegin", data.item);
@@ -84,7 +98,6 @@ export default class extends Controller {
         });
 
         xhr.upload.onprogress = ev => {
-            console.log("progress...");
             let pct = Math.ceil((ev.loaded / ev.total) * 100);
             this.renderProgress(pct);
         };
@@ -94,7 +107,7 @@ export default class extends Controller {
             document.querySelector('meta[name="csrf-token"]').content
         );
 
-        data.append("file", file);
+        data.append("file", files[0]);
         xhr.send(data);
     }
 

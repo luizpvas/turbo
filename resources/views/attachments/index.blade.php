@@ -8,10 +8,14 @@
             <div class="mb-2">
                 @lang('Drag and drop files here or click the input below to upload your assets.')
             </div>
-            <input type="file" name="file">
+            <input type="file" name="file" multiple data-target="attachments.upload">
         </div>
 
         <div class="my-2" data-target="attachments.progress"></div>
+
+        <div class="text-center my-3">
+            <h1>@lang('Attachments (:total)', ['total' => $attachments->total()])</h1>
+        </div>
 
         <div class="flex flex-wrap" data-target="attachments.output">
             @foreach($attachments as $attachment)

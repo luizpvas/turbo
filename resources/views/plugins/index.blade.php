@@ -3,7 +3,7 @@
 @section('content')
     <div class="flex items-center px-3 py-2">
         <div class="mr-auto">
-            <h1>@lang(':website\'s plugins', ['website' => $website->name])</h1>
+            <h1>@lang('Enabled plugins', ['website' => $website->name])</h1>
             <div class="italic text-grey-darkest">@lang("Here's a list of the currently enabled plugins")</div>
         </div>
         <a class="button" href="{{ route('websites.plugins.create', $website) }}">
